@@ -1,0 +1,17 @@
+1;1;Java is a high-level programming language and is platform-independent;true
+2;1;Java it's type of JS ;false
+3;1;Java it's coffee;true
+4;2;Aspect Oriented Programming;true
+5;2;Any Object Programming;false
+6;2;Asset Oriented Programming;false
+7;2;Asset Oriented Protocol;false
+8;3;remove() method;false
+9;3;using Iterator;false
+10;3;remove() method and using Iterator;true
+11;3;delete() method;false
+12;4;0x99fffL;true
+13;4;ABCDEFG;false
+14;4;0x99fffa;false
+15;4;99671246;false
+16;5;Compile time polymorphism;true
+19;5;Multilevel polymorphism;false
