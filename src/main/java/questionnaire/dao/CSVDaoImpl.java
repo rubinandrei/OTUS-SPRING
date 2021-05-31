@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -16,21 +15,21 @@ import org.apache.log4j.Logger;
 import java.util.stream.Collectors;
 
 public class CSVDaoImpl implements CSVDao {
-    final static Logger logger = Logger.getLogger(CSVDaoImpl.class);
+    final static Logger LOGGER = Logger.getLogger(CSVDaoImpl.class);
 
-    private String questionFile;
-    private String answerFile;
+    private final String QUESTION_FILE;
+    private final String ANSWER_FILE;
 
     public CSVDaoImpl(String questionFile, String answerFile) {
-        this.questionFile = questionFile;
-        this.answerFile = answerFile;
+        this.QUESTION_FILE = questionFile;
+        this.ANSWER_FILE = answerFile;
     }
 
     @Override
     public List<Question> getQuestions() {
         List<Answer> answers = getAnswer();
         List<Question> questions = new ArrayList<>();
-        try (InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(questionFile);
+        try (InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(QUESTION_FILE);
              BufferedReader questionReader = new BufferedReader(new InputStreamReader(stream))) {
             questions = questionReader.lines()
                     .map(q -> q.split(";"))
@@ -42,9 +41,9 @@ public class CSVDaoImpl implements CSVDao {
                     })
                     .collect(Collectors.toList());
         } catch (NullPointerException ex) {
-            logger.error(ex);
+            LOGGER.error(ex);
         } catch (IOException e) {
-            logger.error(e);
+            LOGGER.error(e);
         }
         return questions;
     }
@@ -52,7 +51,7 @@ public class CSVDaoImpl implements CSVDao {
     @Override
     public List<Answer> getAnswer() {
         List<Answer> answers = new ArrayList<>();
-        try (InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(answerFile);
+        try (InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(ANSWER_FILE);
              BufferedReader questionReader = new BufferedReader(new InputStreamReader(stream))) {
             answers = questionReader.lines()
                     .map(q -> q.split(";"))
@@ -63,9 +62,9 @@ public class CSVDaoImpl implements CSVDao {
                     })
                     .collect(Collectors.toList());
         } catch (NullPointerException ex) {
-            logger.error(ex);
+            LOGGER.error(ex);
         } catch (IOException e) {
-            logger.error(e);
+            LOGGER.error(e);
         }
 
         return answers;
