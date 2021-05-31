@@ -36,7 +36,7 @@ public class Question {
     }
 
     public void setAnswers(List<Answer> answers) {
-        if(!Objects.isNull(answers)) {
+        if (!Objects.isNull(answers)) {
             this.answers = answers.stream()
                     .filter(x -> x.getQuestionsID() == this.id)
                     .collect(Collectors.toList());

@@ -13,10 +13,10 @@ public class InOutServiceTest {
 
 
     @Test
-    public void readAnswerTest(){
+    public void readAnswerTest() {
         System.setIn(new ByteArrayInputStream(String.valueOf(4).getBytes()));
         InOutServices services = new InOutServicesImpl();
-        assertThat(services.readAnswer(5) , is(4));
+        assertThat(services.readAnswer(5), is(4));
     }
 
 

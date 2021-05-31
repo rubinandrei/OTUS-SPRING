@@ -64,7 +64,7 @@ public class CSVDaoImpl implements CSVDao {
                     .collect(Collectors.toList());
         } catch (NullPointerException ex) {
             logger.error(ex);
-        }catch (IOException e) {
+        } catch (IOException e) {
             logger.error(e);
         }
 

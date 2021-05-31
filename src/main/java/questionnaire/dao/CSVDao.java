@@ -8,5 +8,6 @@ import java.util.List;
 public interface CSVDao {
 
     List<Question> getQuestions();
+
     List<Answer> getAnswer();
 }

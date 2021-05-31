@@ -5,5 +5,4 @@ public interface InOutServices {
 
     int readAnswer(int count);
 
-
 }

@@ -17,18 +17,18 @@ public class DaoExeptionTest {
     private String pathAnswerCSV = "QuizCSV/1answers.csv";
 
     @Before
-    public void init(){
-        dao = new CSVDaoImpl(this.pathQuestionCSV,this.pathAnswerCSV);
+    public void init() {
+        dao = new CSVDaoImpl(this.pathQuestionCSV, this.pathAnswerCSV);
     }
 
     @Test
-    public void questionsExceptionTest(){
+    public void questionsExceptionTest() {
         List<Question> question = dao.getQuestions();
         assertThat(question, is(empty()));
     }
 
     @Test
-    public void answerExceptionTest(){
+    public void answerExceptionTest() {
         List<Answer> answer = dao.getAnswer();
         assertThat(answer, is(empty()));
     }
