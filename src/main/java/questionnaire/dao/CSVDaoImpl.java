@@ -32,6 +32,7 @@ public class CSVDaoImpl implements CSVDao {
         try (InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(question_file);
              BufferedReader questionReader = new BufferedReader(new InputStreamReader(stream))) {
             questions = questionReader.lines()
+                    .skip(1)
                     .map(q -> q.split(";"))
                     .filter(q -> q.length > 1)
                     .map(q -> {
@@ -54,6 +55,7 @@ public class CSVDaoImpl implements CSVDao {
         try (InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(answer_file);
              BufferedReader questionReader = new BufferedReader(new InputStreamReader(stream))) {
             answers = questionReader.lines()
+                    .skip(1)
                     .map(q -> q.split(";"))
                     .filter(q -> q.length > 3)
                     .map(q -> {
