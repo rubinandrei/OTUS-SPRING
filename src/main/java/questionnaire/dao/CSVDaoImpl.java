@@ -18,11 +18,9 @@ public class CSVDaoImpl implements CSVDao {
     final static Logger LOGGER = Logger.getLogger(CSVDaoImpl.class);
 
     private final String question_file;
-    private final String answer_file;
 
-    public CSVDaoImpl(String questionFile, String answerFile) {
+    public CSVDaoImpl(String questionFile) {
         this.question_file = questionFile;
-        this.answer_file = answerFile;
     }
 
     @Override
@@ -34,9 +32,9 @@ public class CSVDaoImpl implements CSVDao {
             questions = questionReader.lines()
                     .skip(1)
                     .map(q -> q.split(";"))
-                    .filter(q -> q.length > 1)
+                    .filter(q -> Integer.parseInt(q[1]) == 0)
                     .map(q -> {
-                        Question question = new Question(Integer.parseInt(q[0]), q[1]);
+                        Question question = new Question(Integer.parseInt(q[0]), q[2]);
                         question.setAnswers(answers);
                         return question;
                     })
@@ -52,15 +50,15 @@ public class CSVDaoImpl implements CSVDao {
     @Override
     public List<Answer> getAnswer() {
         List<Answer> answers = new ArrayList<>();
-        try (InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(answer_file);
+        try (InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(question_file);
              BufferedReader questionReader = new BufferedReader(new InputStreamReader(stream))) {
             answers = questionReader.lines()
                     .skip(1)
                     .map(q -> q.split(";"))
-                    .filter(q -> q.length > 3)
+                    .filter(q -> q.length >= 4)
+                    .filter(q -> Integer.parseInt(q[1]) == 1)
                     .map(q -> {
-                        return new Answer(Integer.parseInt(q[0]), Integer.parseInt(q[1]), q[2], Boolean.parseBoolean(q[3]));
-
+                        return new Answer(Integer.parseInt(q[0]), Integer.parseInt(q[3]), q[2], Boolean.parseBoolean(q[4]));
                     })
                     .collect(Collectors.toList());
         } catch (NullPointerException ex) {

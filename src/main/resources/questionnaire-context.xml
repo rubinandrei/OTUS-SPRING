@@ -6,7 +6,6 @@
 
     <bean id="questionDao" class="questionnaire.dao.CSVDaoImpl">
         <constructor-arg name="questionFile" value="QuizCSV/questions.csv"/>
-        <constructor-arg name="answerFile" value="QuizCSV/answers.csv"/>
     </bean>
 
     <bean id="inOut" class="questionnaire.services.InOutServicesImpl">

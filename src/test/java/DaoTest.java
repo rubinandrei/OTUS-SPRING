@@ -17,12 +17,11 @@ public class DaoTest {
 
     private CSVDaoImpl dao;
     private String pathQuestionCSV = "QuizCSV/questions.csv";
-    private String pathAnswerCSV = "QuizCSV/answers.csv";
     private List<Answer> answerMock = List.of(new Answer(1, 1, "mock question", true));
 
     @Before
     public void init() {
-        dao = Mockito.spy(new CSVDaoImpl(this.pathQuestionCSV, this.pathAnswerCSV));
+        dao = Mockito.spy(new CSVDaoImpl(this.pathQuestionCSV));
     }
 
     @Test

@@ -18,7 +18,7 @@ public class DaoExeptionTest {
 
     @Before
     public void init() {
-        dao = new CSVDaoImpl(this.pathQuestionCSV, this.pathAnswerCSV);
+        dao = new CSVDaoImpl(this.pathQuestionCSV);
     }
 
     @Test
