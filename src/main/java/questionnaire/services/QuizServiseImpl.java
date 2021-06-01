@@ -19,7 +19,7 @@ public class QuizServiseImpl implements QuizService {
 
     @Override
     public void showQustions() {
-        System.out.println("Start quiz:");
+        inOutServices.print("Start quiz:");
         AtomicInteger answerNb = new AtomicInteger();
         csvDao.getQuestions().stream().forEach(question -> {
             answerNb.set(0);
