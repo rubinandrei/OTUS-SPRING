@@ -1,5 +1,9 @@
 package questionnaire.dao;
 
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 import questionnaire.dto.Answer;
 import questionnaire.dto.Question;
 
@@ -14,6 +18,8 @@ import org.apache.log4j.Logger;
 
 import java.util.stream.Collectors;
 
+@Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class CSVDaoImpl implements CSVDao {
     final static Logger LOGGER = Logger.getLogger(CSVDaoImpl.class);
 
@@ -22,6 +28,8 @@ public class CSVDaoImpl implements CSVDao {
     public CSVDaoImpl(String questionFile) {
         this.question_file = questionFile;
     }
+
+    @Post
 
     @Override
     public List<Question> getQuestions() {
