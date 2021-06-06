@@ -24,7 +24,7 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public String getUserLastName() {
-        return this.user.getFirstName();
+        return this.user.getLastName();
     }
 
     @Override

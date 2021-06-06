@@ -17,7 +17,9 @@ public class StartQuestions {
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(StartQuestions.class);
         QuizService quiz = context.getBean(QuizService.class);
+        quiz.setUser();
         quiz.showQustions();
+        quiz.printResult();
 
     }
 }

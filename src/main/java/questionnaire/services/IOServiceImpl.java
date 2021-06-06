@@ -24,10 +24,6 @@ public class IOServiceImpl implements IOService{
 
     @Override
     public String readString() {
-        while (!scanner.hasNextLine()) {
-            scanner.nextLine();
-            out.println("Please add answer!");
-        }
         return scanner.nextLine();
     }
 
