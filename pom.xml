@@ -45,6 +45,11 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
+            <dependency>
+                <groupId>javax.annotation</groupId>
+                <artifactId>javax.annotation-api</artifactId>
+                <version>1.3.2</version>
+            </dependency>
     </dependencies>
     <build>
         <finalName>${project.name}</finalName>
