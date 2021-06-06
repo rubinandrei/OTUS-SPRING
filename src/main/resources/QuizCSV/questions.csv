@@ -1,0 +1,23 @@
+ID;type;Name;questionID;isValidAnswer;
+1;0;What is JAVA?;;;
+1;1;Java is a high-level programming language and is platform-independent;1;true
+2;1;Java it's type of JS;1;false
+3;1;Java it's coffee;1;false
+2;0;What AOP stands for?;;;
+4;1;Aspect Oriented Programming;2;true
+5;1;Any Object Programming;2;false
+6;1;Asset Oriented Programming;2;false
+7;1;Asset Oriented Protocol;2;false
+3;0;How can we remove an object from ArrayList?;;;
+8;1;remove() method;3;false
+9;1;using Iterator;3;false
+10;1;remove() method and using Iterator;3;true
+11;1;delete() method;3;false
+4;0;Which of these is long data type literal?;;;
+12;1;0x99fffL;4;true
+13;1;ABCDEFG;4;false
+14;1;0x99fffa;4;false
+15;1;99671246;4;false
+5;0;Which of the following is a type of polymorphism in Java?;;;
+16;1;Compile time polymorphism;5;true
+19;1;Multilevel polymorphism;5;false
