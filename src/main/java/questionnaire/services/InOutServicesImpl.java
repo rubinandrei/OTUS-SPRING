@@ -1,8 +1,11 @@
 package questionnaire.services;
 
+import org.springframework.stereotype.Service;
+
 import java.io.PrintStream;
 import java.util.Scanner;
 
+@Service
 public class InOutServicesImpl implements InOutServices {
 
     private final PrintStream printStream = new PrintStream(System.out);

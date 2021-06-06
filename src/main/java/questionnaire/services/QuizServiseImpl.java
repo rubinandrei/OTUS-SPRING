@@ -1,17 +1,21 @@
 package questionnaire.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import questionnaire.dao.CSVDao;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Service
 public class QuizServiseImpl implements QuizService {
 
     private static final String QUIZ_OUT = "\n %s \n";
     private static final String ANSWER_OUT = "\t %d.  -  %s \n\n";
 
-    private CSVDao csvDao;
-    private InOutServices inOutServices;
+    private final CSVDao csvDao;
+    private final InOutServices inOutServices;
 
+    @Autowired
     public QuizServiseImpl(CSVDao csvDao, InOutServices inOut) {
         this.csvDao = csvDao;
         this.inOutServices = inOut;
