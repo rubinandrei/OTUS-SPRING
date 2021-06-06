@@ -8,9 +8,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import questionnaire.services.QuizService;
 
-@PropertySource("classpath:quiz.properties")
 @ComponentScan
 @Configuration
+@PropertySource("classpath:quiz.properties")
 public class StartQuestions {
 
     public static void main(String[] args) {

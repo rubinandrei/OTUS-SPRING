@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import questionnaire.dto.Answer;
 import questionnaire.dto.Question;
 
@@ -17,9 +18,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import javax.annotation.PostConstruct;
-import java.util.stream.Collectors;
 
-@Component
+
+@Repository
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CSVDaoImpl implements CSVDao {
 
@@ -35,6 +36,10 @@ public class CSVDaoImpl implements CSVDao {
 
     @PostConstruct
     private void init() throws IOException {
+        readFile();
+    }
+
+    public void readFile() throws IOException{
         try (InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(question_file);
              BufferedReader questionReader = new BufferedReader(new InputStreamReader(stream))) {
             questionReader.lines()
@@ -55,7 +60,6 @@ public class CSVDaoImpl implements CSVDao {
 
     @Override
     public List<Question> getQuestions() {
-
         return this.questions;
     }
 
@@ -64,5 +68,9 @@ public class CSVDaoImpl implements CSVDao {
         return this.answers;
     }
 
-
+    private void mergeQuestions(){
+        questions.stream().forEach(q->{
+            q.setAnswers(answers);
+        });
+    }
 }

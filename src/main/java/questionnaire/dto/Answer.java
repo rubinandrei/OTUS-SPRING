@@ -1,6 +1,6 @@
 package questionnaire.dto;
 
-public class Answer {
+public final class Answer {
     private int id;
     private int questionsID;
     private String answer;
