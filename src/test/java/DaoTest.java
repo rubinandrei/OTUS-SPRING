@@ -1,42 +1,59 @@
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import questionnaire.dao.CSVDaoImpl;
-import questionnaire.dto.Answer;
-import questionnaire.dto.Question;
+import questionnaire.dao.UserDaoImpl;
 
-import java.util.List;
+
+import java.io.IOException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Mockito.when;
 import static org.hamcrest.Matchers.is;
+
 
 public class DaoTest {
 
-    private CSVDaoImpl dao;
-    private String pathQuestionCSV = "QuizCSV/questions.csv";
-    private List<Answer> answerMock = List.of(new Answer(1, 1, "mock question", true));
+
+    private String pathQuestionCSV = "test_questions.csv";
 
     @Before
-    public void init() {
-        dao = Mockito.spy(new CSVDaoImpl(this.pathQuestionCSV));
+    public void init(){
+
+    }
+
+
+    @Test
+    public void questionsDaoTest() {
+        CSVDaoImpl dao = new CSVDaoImpl(pathQuestionCSV);
+        try {
+            dao.readFile();
+            assertThat(dao.getQuestions(),hasSize(1));
+            assertThat(dao.getQuestions().get(0).getAnswers(),hasSize(1));
+
+            assertThat( dao.getQuestions(),contains(allOf(hasProperty("question",is("What is JAVA?")),
+                                                                     hasProperty("id", is(1)))));
+
+            assertThat(dao.getQuestions().get(0).getAnswers(),contains(allOf(hasProperty("id",is(1)),
+                    hasProperty("questionsID", is(1)),
+                    hasProperty("answer", is("Java is a high-level programming language and is platform-independent")))));
+
+
+        } catch (IOException e) {
+            assertThat("problem with read file ",false);
+        }
     }
 
     @Test
-    public void questionsTest() {
-        when(dao.getAnswer()).thenReturn(this.answerMock);
-        List<Question> questionList = dao.getQuestions();
-        assertThat(questionList, hasSize(5));
-        assertThat(questionList.get(0).getQuestion(), is("What is JAVA?"));
-        assertThat(questionList.get(0).getAnswers(), hasSize(1));
-        assertThat(questionList.get(0).getAnswers(), is(equalTo(answerMock)));
-    }
-
-    @Test
-    public void answerTest() {
-        List<Answer> questionList = dao.getAnswer();
-        assertThat("wrong answers count", questionList, hasSize(17));
+    public void userDaoTest() {
+        UserDaoImpl dao = new UserDaoImpl();
+        dao.setUser("Andrei","Rubin");
+        dao.setUserCorrectAnswerCount(5);
+        assertThat(dao.getUserFirstName(),is("Andrei"));
+        assertThat(dao.getUserLastName(),is("Rubin"));
+        assertThat(dao.getUserCorrectAnswer(),is(5));
     }
 }

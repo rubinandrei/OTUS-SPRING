@@ -2,8 +2,8 @@ package questionnaire.services;
 
 public interface QuizService {
 
-    void showQustions();
+    void startQuiz();
     void setUser();
-    void printResult();
+    String getResult();
 
 }

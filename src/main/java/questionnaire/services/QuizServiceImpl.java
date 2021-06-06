@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
-public class QuizServiseImpl implements QuizService {
+public class QuizServiceImpl implements QuizService {
 
     @Value("${max.passValue}")
     private int passValue;
@@ -20,6 +20,8 @@ public class QuizServiseImpl implements QuizService {
     private static final String QUIZ_OUT = "\n %s \n";
     private static final String ANSWER_OUT = "\t %d.  -  %s \n\n";
     private static final String START_QUIZ = "\n\n\t %s %s Start quiz:\n\n";
+    private static final String RESULT_FORM = "%s  %s  your result %d of correct answers \n " +
+                                              "it's %d%%" ;
 
     private final List<Question> question;
     private final List<Answer> answers;
@@ -28,15 +30,15 @@ public class QuizServiseImpl implements QuizService {
 
 
     @Autowired
-    public QuizServiseImpl(DaoFactory daoFactory, IOServiceImpl inOut) {
+    public QuizServiceImpl(DaoFactory daoFactory, IOServiceImpl inOut) {
         this.question = daoFactory.getCsvDao().getQuestions();
         this.answers = daoFactory.getCsvDao().getAnswer();
-        this.userDao = daoFactory.getUserDao();
+        this.userDao = daoFactory.setUserDao();
         this.inOut = inOut;
     }
 
     @Override
-    public void showQustions() {
+    public void startQuiz() {
         inOut.printString(String.format(START_QUIZ,userDao.getUserFirstName(),userDao.getUserLastName()));
         AtomicInteger answerNb = new AtomicInteger();
         question.stream().forEach(question -> {
@@ -45,8 +47,9 @@ public class QuizServiseImpl implements QuizService {
             question.getAnswers().stream().forEach(answer -> {
                 inOut.printString(String.format(ANSWER_OUT, answerNb.incrementAndGet(), answer.getAnswer()));
             });
-            question.setAnswerID(inOut.readQuestionAnswer(answerNb.get())-1);
+            question.setAnswerID(inOut.readQuestionAnswer(answerNb.get()));
         });
+        calcResult();
     }
 
     @Override
@@ -58,13 +61,27 @@ public class QuizServiseImpl implements QuizService {
         userDao.setUser(firstName,lastName);
     }
 
-    private void calcResult(){
-        int count = (int) question.stream().filter(question -> question.getAnswers().get(question.getAnswerID()).isCorrect()).count();
+    public void calcResult(){
+        int count = (int) question.stream()
+                .filter(question -> question.getAnswers().get(question.getAnswerID()-1).isCorrect())
+                .count();
         userDao.setUserCorrectAnswerCount(count);
     }
-    public void printResult(){
-       calcResult();
-       inOut.printString("Correct answers: "+ userDao.getUserCorrectAnswer());
+
+    public String getResult(){
+        String resultFormat = userDao.getUserCorrectAnswer() > 0
+                ? String.format(RESULT_FORM,
+                    userDao.getUserFirstName(),
+                    userDao.getUserLastName(),
+                    userDao.getUserCorrectAnswer(),
+                    (int) (userDao.getUserCorrectAnswer() * 100/ question.size()))
+                : String.format(RESULT_FORM,
+                    userDao.getUserFirstName(),
+                    userDao.getUserLastName(),
+                    0,0);
+
+        return resultFormat.toUpperCase();
+
     }
 
 }
