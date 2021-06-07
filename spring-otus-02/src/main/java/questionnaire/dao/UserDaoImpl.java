@@ -7,7 +7,7 @@ import questionnaire.dto.User;
 
 @Repository
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class UserDaoImpl implements UserDao{
+public class UserDaoImpl implements UserDao {
 
     private User user;
 
@@ -33,6 +33,6 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public void setUser(String firstName, String lastName) {
-        this.user = new User(firstName,lastName);
+        this.user = new User(firstName, lastName);
     }
 }

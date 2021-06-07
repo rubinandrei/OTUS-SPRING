@@ -22,7 +22,6 @@ public class DaoExeptionTest {
     public void questionsExceptionTest() throws IOException {
         dao.readFile();
     }
-    
 
 
 }

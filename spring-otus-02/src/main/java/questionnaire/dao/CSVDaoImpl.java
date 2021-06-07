@@ -38,7 +38,7 @@ public class CSVDaoImpl implements CSVDao {
         readFile();
     }
 
-    public void readFile() throws IOException, NullPointerException{
+    public void readFile() throws IOException, NullPointerException {
         try (InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(question_file);
              BufferedReader questionReader = new BufferedReader(new InputStreamReader(stream))) {
             questionReader.lines()
@@ -65,7 +65,7 @@ public class CSVDaoImpl implements CSVDao {
         return this.answers;
     }
 
-    private void mergeQuestions(){
-        questions.forEach(q-> q.setAnswers(answers));
+    private void mergeQuestions() {
+        questions.forEach(q -> q.setAnswers(answers));
     }
 }

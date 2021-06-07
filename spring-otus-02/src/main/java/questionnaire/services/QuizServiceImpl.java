@@ -7,6 +7,7 @@ import questionnaire.dao.DaoFactory;
 import questionnaire.dao.UserDao;
 import questionnaire.dto.Answer;
 import questionnaire.dto.Question;
+
 import java.util.List;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -21,7 +22,7 @@ public class QuizServiceImpl implements QuizService {
     private static final String ANSWER_OUT = "\t %d.  -  %s \n\n";
     private static final String START_QUIZ = "\n\n\t %s %s Start quiz:\n\n";
     private static final String RESULT_FORM = "%s  %s  your result %d of correct answers \n " +
-                                              "it's %d%%" ;
+            "it's %d%%";
 
     private final List<Question> question;
     private final List<Answer> answers;
@@ -39,7 +40,7 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public void startQuiz() {
-        inOut.printString(String.format(START_QUIZ,userDao.getUserFirstName(),userDao.getUserLastName()));
+        inOut.printString(String.format(START_QUIZ, userDao.getUserFirstName(), userDao.getUserLastName()));
         AtomicInteger answerNb = new AtomicInteger();
         question.forEach(question -> {
             answerNb.set(0);
@@ -54,27 +55,27 @@ public class QuizServiceImpl implements QuizService {
     @Override
     public void setUser() {
         String[] user = inOut.readUser();
-        userDao.setUser(user[0],user[1]);
+        userDao.setUser(user[0], user[1]);
     }
 
-    public void calcResult(){
+    public void calcResult() {
         int count = (int) question.stream()
-                .filter(question -> question.getAnswers().get(question.getAnswerID()-1).isCorrect())
+                .filter(question -> question.getAnswers().get(question.getAnswerID() - 1).isCorrect())
                 .count();
         userDao.setUserCorrectAnswerCount(count);
     }
 
-    public String getResult(){
+    public String getResult() {
         String resultFormat = userDao.getUserCorrectAnswer() > 0
                 ? String.format(RESULT_FORM,
-                    userDao.getUserFirstName(),
-                    userDao.getUserLastName(),
-                    userDao.getUserCorrectAnswer(),
-                userDao.getUserCorrectAnswer() * 100/ question.size())
+                userDao.getUserFirstName(),
+                userDao.getUserLastName(),
+                userDao.getUserCorrectAnswer(),
+                userDao.getUserCorrectAnswer() * 100 / question.size())
                 : String.format(RESULT_FORM,
-                    userDao.getUserFirstName(),
-                    userDao.getUserLastName(),
-                    0,0);
+                userDao.getUserFirstName(),
+                userDao.getUserLastName(),
+                0, 0);
 
         return resultFormat.toUpperCase();
 

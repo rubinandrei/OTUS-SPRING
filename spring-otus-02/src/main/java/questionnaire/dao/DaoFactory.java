@@ -10,12 +10,12 @@ public class DaoFactory {
     private UserDao userDao;
 
     @Autowired
-    public void setCsvDaoFactory(CSVDao csvDao){
-        this.csvDao =csvDao;
+    public void setCsvDaoFactory(CSVDao csvDao) {
+        this.csvDao = csvDao;
     }
 
     @Autowired
-    public void setUserDao(UserDao userDao){
+    public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
 

@@ -6,7 +6,7 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 @Component
-public class IOServiceImpl implements IOService{
+public class IOServiceImpl implements IOService {
 
     private PrintStream out;
     private Scanner scanner;
@@ -19,7 +19,7 @@ public class IOServiceImpl implements IOService{
 
     @Override
     public void printString(String message) {
-         out.println(message);
+        out.println(message);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class IOServiceImpl implements IOService{
         while (true) {
             out.println("Please write your name and last name with spase");
             str = scanner.nextLine().split(" ");
-            if(str.length > 1){
+            if (str.length > 1) {
                 break;
             }
         }

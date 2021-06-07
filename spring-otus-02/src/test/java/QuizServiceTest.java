@@ -24,7 +24,6 @@ public class QuizServiceTest {
     private QuizServiceImpl quizService;
 
 
-
     @Before
     public void init() throws IOException {
         System.setIn(new ByteArrayInputStream(String.valueOf(1).getBytes()));
@@ -36,31 +35,31 @@ public class QuizServiceTest {
         daoFactory.setCsvDaoFactory(dao);
         daoFactory.setUserDao(userDao);
         ioService = Mockito.spy(new IOServiceImpl(new IOStreamFactory()));
-        quizService = Mockito.spy(new QuizServiceImpl(daoFactory,ioService));
+        quizService = Mockito.spy(new QuizServiceImpl(daoFactory, ioService));
 
     }
 
     @Test
-    public void quizServiceCalcResultTest(){
+    public void quizServiceCalcResultTest() {
         dao.getQuestions().get(0).setAnswerID(1);
         quizService.calcResult();
-        assertThat(userDao.getUserCorrectAnswer(),is(1));
+        assertThat(userDao.getUserCorrectAnswer(), is(1));
 
     }
 
     @Test
-    public void quizServiceResultTest(){
+    public void quizServiceResultTest() {
         dao.getQuestions().get(0).setAnswerID(1);
         quizService.calcResult();
-        assertThat(quizService.getResult(),is("ANDREI  RUBIN  YOUR RESULT 1 OF CORRECT ANSWERS \n IT'S 100%"));
+        assertThat(quizService.getResult(), is("ANDREI  RUBIN  YOUR RESULT 1 OF CORRECT ANSWERS \n IT'S 100%"));
     }
 
 
     @Test
-    public void startQuizTest(){
+    public void startQuizTest() {
         quizService.startQuiz();
-        assertThat(quizService.getResult(),is("ANDREI  RUBIN  YOUR RESULT 1 OF CORRECT ANSWERS \n IT'S 100%"));
-        assertThat(userDao.getUserCorrectAnswer(),is(1));
+        assertThat(quizService.getResult(), is("ANDREI  RUBIN  YOUR RESULT 1 OF CORRECT ANSWERS \n IT'S 100%"));
+        assertThat(userDao.getUserCorrectAnswer(), is(1));
     }
 
 

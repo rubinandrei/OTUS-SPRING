@@ -34,15 +34,15 @@ public class InOutServiceTest {
         daoFactory.setCsvDaoFactory(dao);
         daoFactory.setUserDao(userDao);
         ioService = new IOServiceImpl(new IOStreamFactory());
-        quizService = new QuizServiceImpl(daoFactory,ioService);
+        quizService = new QuizServiceImpl(daoFactory, ioService);
 
     }
 
     @Test
     public void readAnswerTest() throws IOException {
         quizService.setUser();
-        assertThat(userDao.getUserFirstName(),is(USER_NAME.split(" ")[0]));
-        assertThat(userDao.getUserLastName(),is(USER_NAME.split(" ")[1]));
+        assertThat(userDao.getUserFirstName(), is(USER_NAME.split(" ")[0]));
+        assertThat(userDao.getUserLastName(), is(USER_NAME.split(" ")[1]));
     }
 
 
