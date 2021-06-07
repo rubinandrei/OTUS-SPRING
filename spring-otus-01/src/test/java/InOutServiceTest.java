@@ -3,7 +3,6 @@ import questionnaire.services.InOutServices;
 import questionnaire.services.InOutServicesImpl;
 
 import java.io.ByteArrayInputStream;
-import java.math.BigInteger;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
