@@ -10,7 +10,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class DaoExeptionTest {
     private CSVDaoImpl dao;
-    private String pathQuestionCSV = "1questions.csv";
+    private String pathQuestionCSV = "2questions.csv";
 
 
     @Before
