@@ -5,8 +5,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Question {
-    private int id;
-    private String question;
+    private final int id;
+    private final String question;
     private List<Answer> answers;
     private int answerID;
 
@@ -19,17 +19,10 @@ public class Question {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getQuestion() {
         return question;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
-    }
 
     public List<Answer> getAnswers() {
         return answers;

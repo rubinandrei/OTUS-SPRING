@@ -1,10 +1,10 @@
 package questionnaire.dto;
 
-public final class Answer {
-    private int id;
-    private int questionsID;
+public class Answer {
+    private final int id;
+    private final int questionsID;
     private String answer;
-    private boolean isCorrect;
+    private final boolean isCorrect;
 
     public Answer(int id, int questionsID, String answer, boolean isCorrect) {
         this.id = id;
@@ -17,17 +17,11 @@ public final class Answer {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public int getQuestionsID() {
         return questionsID;
     }
 
-    public void setQuestionsID(int questionsID) {
-        this.questionsID = questionsID;
-    }
 
     public String getAnswer() {
         return answer;
@@ -39,9 +33,5 @@ public final class Answer {
 
     public boolean isCorrect() {
         return isCorrect;
-    }
-
-    public void setCorrect(boolean correct) {
-        isCorrect = correct;
     }
 }
