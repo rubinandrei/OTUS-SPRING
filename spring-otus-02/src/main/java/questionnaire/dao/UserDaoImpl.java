@@ -1,15 +1,9 @@
 package questionnaire.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import questionnaire.dto.User;
-import questionnaire.services.IOService;
-
-import javax.annotation.PostConstruct;
 
 @Repository
 @Order(Ordered.HIGHEST_PRECEDENCE)

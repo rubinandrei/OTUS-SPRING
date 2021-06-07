@@ -41,12 +41,11 @@ public class QuizServiceImpl implements QuizService {
     public void startQuiz() {
         inOut.printString(String.format(START_QUIZ,userDao.getUserFirstName(),userDao.getUserLastName()));
         AtomicInteger answerNb = new AtomicInteger();
-        question.stream().forEach(question -> {
+        question.forEach(question -> {
             answerNb.set(0);
             inOut.printString(String.format(QUIZ_OUT, question.getQuestion()));
-            question.getAnswers().stream().forEach(answer -> {
-                inOut.printString(String.format(ANSWER_OUT, answerNb.incrementAndGet(), answer.getAnswer()));
-            });
+            question.getAnswers().forEach(answer ->
+                    inOut.printString(String.format(ANSWER_OUT, answerNb.incrementAndGet(), answer.getAnswer())));
             question.setAnswerID(inOut.readQuestionAnswer(answerNb.get()));
         });
         calcResult();
@@ -54,11 +53,8 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public void setUser() {
-        inOut.printString("Please write your name");
-        String firstName = inOut.readString();
-        inOut.printString("Please write your last name");
-        String lastName = inOut.readString();
-        userDao.setUser(firstName,lastName);
+        String[] user = inOut.readUser();
+        userDao.setUser(user[0],user[1]);
     }
 
     public void calcResult(){
@@ -74,7 +70,7 @@ public class QuizServiceImpl implements QuizService {
                     userDao.getUserFirstName(),
                     userDao.getUserLastName(),
                     userDao.getUserCorrectAnswer(),
-                    (int) (userDao.getUserCorrectAnswer() * 100/ question.size()))
+                userDao.getUserCorrectAnswer() * 100/ question.size())
                 : String.format(RESULT_FORM,
                     userDao.getUserFirstName(),
                     userDao.getUserLastName(),

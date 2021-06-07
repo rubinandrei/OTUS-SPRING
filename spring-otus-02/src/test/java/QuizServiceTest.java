@@ -1,21 +1,11 @@
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.event.annotation.BeforeTestMethod;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import questionnaire.StartQuestions;
 import questionnaire.dao.CSVDaoImpl;
 import questionnaire.dao.DaoFactory;
-import questionnaire.dao.UserDao;
 import questionnaire.dao.UserDaoImpl;
-import questionnaire.services.IOService;
 import questionnaire.services.IOServiceImpl;
 import questionnaire.services.IOStreamFactory;
-import questionnaire.services.QuizService;
 import questionnaire.services.QuizServiceImpl;
 
 import java.io.ByteArrayInputStream;
@@ -23,10 +13,9 @@ import java.io.IOException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.when;
 
 
-public class quizServiceTest {
+public class QuizServiceTest {
 
     private CSVDaoImpl dao;
     private UserDaoImpl userDao;

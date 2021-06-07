@@ -3,7 +3,6 @@ package questionnaire.dao;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import questionnaire.dto.Answer;
 import questionnaire.dto.Question;
@@ -67,8 +66,6 @@ public class CSVDaoImpl implements CSVDao {
     }
 
     private void mergeQuestions(){
-        questions.stream().forEach(q->{
-            q.setAnswers(answers);
-        });
+        questions.forEach(q-> q.setAnswers(answers));
     }
 }

@@ -23,8 +23,16 @@ public class IOServiceImpl implements IOService{
     }
 
     @Override
-    public String readString() {
-        return scanner.nextLine();
+    public String[] readUser() {
+        String[] str;
+        while (true) {
+            out.println("Please write your name and last name with spase");
+            str = scanner.nextLine().split(" ");
+            if(str.length > 1){
+                break;
+            }
+        }
+        return str;
     }
 
     @Override
