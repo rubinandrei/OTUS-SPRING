@@ -1,9 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import questionnaire.dao.CSVDaoImpl;
-import questionnaire.dao.DaoFactory;
-import questionnaire.dao.UserDaoImpl;
+import questionnaire.dao.QuizDaoImpl;
 import questionnaire.services.IOServiceImpl;
 import questionnaire.services.IOStreamFactory;
 import questionnaire.services.QuizServiceImpl;
@@ -17,9 +15,7 @@ import static org.hamcrest.Matchers.is;
 
 public class QuizServiceTest {
 
-    private CSVDaoImpl dao;
-    private UserDaoImpl userDao;
-    private DaoFactory daoFactory;
+    private QuizDaoImpl dao;
     private IOServiceImpl ioService;
     private QuizServiceImpl quizService;
 
@@ -27,40 +23,29 @@ public class QuizServiceTest {
     @Before
     public void init() throws IOException {
         System.setIn(new ByteArrayInputStream(String.valueOf(1).getBytes()));
-        dao = new CSVDaoImpl("test_questions.csv");
-        userDao = new UserDaoImpl();
-        userDao.setUser("Andrei", "Rubin");
-        daoFactory = new DaoFactory();
-        dao.readFile();
-        daoFactory.setCsvDaoFactory(dao);
-        daoFactory.setUserDao(userDao);
+        dao = new QuizDaoImpl("test_questions.csv");
+        dao.setUser("Andrei", "Rubin");
         ioService = Mockito.spy(new IOServiceImpl(new IOStreamFactory()));
-        quizService = Mockito.spy(new QuizServiceImpl(daoFactory, ioService));
+        quizService = new QuizServiceImpl(dao, ioService);
+        quizService.initQuiz();
 
     }
 
     @Test
     public void quizServiceCalcResultTest() {
-        dao.getQuestions().get(0).setAnswerID(1);
+        System.setIn(new ByteArrayInputStream(String.valueOf(1).getBytes()));
+        quizService.showQuiz();
         quizService.calcResult();
-        assertThat(userDao.getUserCorrectAnswer(), is(1));
+        assertThat(dao.getUser().getCountCorrectAnswers(), is(1));
 
     }
 
     @Test
-    public void quizServiceResultTest() {
-        dao.getQuestions().get(0).setAnswerID(1);
+    public void quizServiceResultTest() throws IOException {
+        System.setIn(new ByteArrayInputStream(String.valueOf(1).getBytes()));
+        quizService.showQuiz();
         quizService.calcResult();
-        assertThat(quizService.getResult(), is("ANDREI  RUBIN  YOUR RESULT 1 OF CORRECT ANSWERS \n IT'S 100%"));
+        assertThat(quizService.showResult(), is("ANDREI  RUBIN  YOUR RESULT 1 OF CORRECT ANSWERS \n IT'S 100%"));
     }
-
-
-    @Test
-    public void startQuizTest() {
-        quizService.startQuiz();
-        assertThat(quizService.getResult(), is("ANDREI  RUBIN  YOUR RESULT 1 OF CORRECT ANSWERS \n IT'S 100%"));
-        assertThat(userDao.getUserCorrectAnswer(), is(1));
-    }
-
 
 }

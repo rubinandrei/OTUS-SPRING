@@ -1,7 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
-import questionnaire.dao.CSVDaoImpl;
-import questionnaire.dao.UserDaoImpl;
+import questionnaire.dao.QuizDao;
+import questionnaire.dao.QuizDaoImpl;
 
 
 import java.io.IOException;
@@ -19,29 +19,23 @@ public class DaoTest {
 
 
     private String pathQuestionCSV = "test_questions.csv";
+    private QuizDaoImpl dao;
 
     @Before
-    public void init() {
-
+    public void init() throws IOException {
+        dao = new QuizDaoImpl(pathQuestionCSV);
     }
 
 
     @Test
     public void questionsDaoTest() {
-        CSVDaoImpl dao = new CSVDaoImpl(pathQuestionCSV);
+
         try {
             dao.readFile();
             assertThat(dao.getQuestions(), hasSize(1));
-            assertThat(dao.getQuestions().get(0).getAnswers(), hasSize(1));
 
             assertThat(dao.getQuestions(), contains(allOf(hasProperty("question", is("What is JAVA?")),
                     hasProperty("id", is(1)))));
-
-            assertThat(dao.getQuestions().get(0).getAnswers(), contains(allOf(hasProperty("id", is(1)),
-                    hasProperty("questionsID", is(1)),
-                    hasProperty("answer", is("Java is a high-level programming language and is platform-independent")))));
-
-
         } catch (IOException e) {
             assertThat("problem with read file ", false);
         }
@@ -49,11 +43,10 @@ public class DaoTest {
 
     @Test
     public void userDaoTest() {
-        UserDaoImpl dao = new UserDaoImpl();
         dao.setUser("Andrei", "Rubin");
-        dao.setUserCorrectAnswerCount(5);
-        assertThat(dao.getUserFirstName(), is("Andrei"));
-        assertThat(dao.getUserLastName(), is("Rubin"));
-        assertThat(dao.getUserCorrectAnswer(), is(5));
+        dao.getUser().setCountCorrectAnswers(5);
+        assertThat(dao.getUser().getFirstName(), is("Andrei"));
+        assertThat(dao.getUser().getLastName(), is("Rubin"));
+        assertThat(dao.getUser().getCountCorrectAnswers(), is(5));
     }
 }

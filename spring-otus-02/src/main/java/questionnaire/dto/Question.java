@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class Question {
+public class Question implements Cloneable{
     private final int id;
     private final String question;
     private List<Answer> answers;
@@ -43,5 +43,14 @@ public class Question {
 
     public void setAnswerID(int answerID) {
         this.answerID = answerID;
+    }
+
+    public Question clone(){
+        try {
+            return (Question) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

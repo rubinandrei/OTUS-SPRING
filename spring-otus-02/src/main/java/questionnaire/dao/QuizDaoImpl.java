@@ -1,8 +1,6 @@
 package questionnaire.dao;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Repository;
 import questionnaire.dto.Answer;
 import questionnaire.dto.Question;
@@ -15,28 +13,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-
-import javax.annotation.PostConstruct;
+import questionnaire.dto.User;
 
 
 @Repository
-@Order(Ordered.HIGHEST_PRECEDENCE)
-public class CSVDaoImpl implements CSVDao {
+public class QuizDaoImpl implements QuizDao {
 
-    final static Logger LOGGER = Logger.getLogger(CSVDaoImpl.class);
+    final static Logger LOGGER = Logger.getLogger(QuizDaoImpl.class);
     private final List<Question> questions = new ArrayList<>();
     private final List<Answer> answers = new ArrayList<>();
+    private User user;
     private final String question_file;
 
 
-    public CSVDaoImpl(@Value("${questions.file}") String questionFile) {
+    public QuizDaoImpl(@Value("${questions.file}") String questionFile) {
         this.question_file = questionFile;
     }
 
-    @PostConstruct
-    private void init() throws IOException {
-        readFile();
-    }
+
 
     public void readFile() throws IOException, NullPointerException {
         try (InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(question_file);
@@ -51,7 +45,6 @@ public class CSVDaoImpl implements CSVDao {
                             questions.add(new Question(Integer.parseInt(q[0]), q[2]));
                         }
                     });
-            mergeQuestions();
         }
     }
 
@@ -61,11 +54,19 @@ public class CSVDaoImpl implements CSVDao {
     }
 
     @Override
-    public List<Answer> getAnswer() {
+    public List<Answer> getAnswers() {
         return this.answers;
     }
 
-    private void mergeQuestions() {
-        questions.forEach(q -> q.setAnswers(answers));
+    @Override
+    public User getUser() {
+        return this.user;
     }
+
+    @Override
+    public void setUser(String firstName, String secondName) {
+         user = new User(firstName,secondName);
+    }
+
+
 }

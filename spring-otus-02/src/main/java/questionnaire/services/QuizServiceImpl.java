@@ -3,14 +3,14 @@ package questionnaire.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import questionnaire.dao.DaoFactory;
-import questionnaire.dao.UserDao;
-import questionnaire.dto.Answer;
+import questionnaire.dao.QuizDao;
 import questionnaire.dto.Question;
 
+import java.io.IOException;
 import java.util.List;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Service
 public class QuizServiceImpl implements QuizService {
@@ -24,61 +24,76 @@ public class QuizServiceImpl implements QuizService {
     private static final String RESULT_FORM = "%s  %s  your result %d of correct answers \n " +
             "it's %d%%";
 
-    private final List<Question> question;
-    private final List<Answer> answers;
-    private final UserDao userDao;
+    private List<Question> questions;
+    private final QuizDao dao;
     private final IOServiceImpl inOut;
 
 
     @Autowired
-    public QuizServiceImpl(DaoFactory daoFactory, IOServiceImpl inOut) {
-        this.question = daoFactory.getCsvDao().getQuestions();
-        this.answers = daoFactory.getCsvDao().getAnswer();
-        this.userDao = daoFactory.setUserDao();
+    public QuizServiceImpl(QuizDao dao, IOServiceImpl inOut) {
+        this.dao = dao;
         this.inOut = inOut;
+
     }
 
+    public void initQuiz() throws IOException {
+        this.dao.readFile();
+        questions = dao.getQuestions().stream()
+                .map(this::apply)
+                .collect(Collectors.toList());
+    }
     @Override
-    public void startQuiz() {
-        inOut.printString(String.format(START_QUIZ, userDao.getUserFirstName(), userDao.getUserLastName()));
+    public void startQuiz() throws IOException {
+        initQuiz();
+        setUser();
+        showQuiz();
+        calcResult();
+        inOut.printString(showResult());
+    }
+
+    public void showQuiz(){
         AtomicInteger answerNb = new AtomicInteger();
-        question.forEach(question -> {
+        questions.forEach(question -> {
             answerNb.set(0);
             inOut.printString(String.format(QUIZ_OUT, question.getQuestion()));
             question.getAnswers().forEach(answer ->
                     inOut.printString(String.format(ANSWER_OUT, answerNb.incrementAndGet(), answer.getAnswer())));
             question.setAnswerID(inOut.readQuestionAnswer(answerNb.get()));
         });
-        calcResult();
     }
 
-    @Override
     public void setUser() {
         String[] user = inOut.readUser();
-        userDao.setUser(user[0], user[1]);
+        dao.setUser(user[0], user[1]);
+        inOut.printString(String.format(START_QUIZ, dao.getUser().getFirstName(), dao.getUser().getFirstName()));
     }
 
     public void calcResult() {
-        int count = (int) question.stream()
+        int count = (int) questions.stream()
                 .filter(question -> question.getAnswers().get(question.getAnswerID() - 1).isCorrect())
                 .count();
-        userDao.setUserCorrectAnswerCount(count);
+        dao.getUser().setCountCorrectAnswers(count);
     }
 
-    public String getResult() {
-        String resultFormat = userDao.getUserCorrectAnswer() > 0
+    public String showResult() {
+        String resultFormat = dao.getUser().getCountCorrectAnswers() > 0
                 ? String.format(RESULT_FORM,
-                userDao.getUserFirstName(),
-                userDao.getUserLastName(),
-                userDao.getUserCorrectAnswer(),
-                userDao.getUserCorrectAnswer() * 100 / question.size())
+                dao.getUser().getFirstName(),
+                dao.getUser().getLastName(),
+                dao.getUser().getCountCorrectAnswers(),
+                dao.getUser().getCountCorrectAnswers() * 100 / questions.size())
                 : String.format(RESULT_FORM,
-                userDao.getUserFirstName(),
-                userDao.getUserLastName(),
+                dao.getUser().getFirstName(),
+                dao.getUser().getLastName(),
                 0, 0);
 
         return resultFormat.toUpperCase();
 
     }
 
+    private Question apply(Question x) {
+        Question question = x.clone();
+        question.setAnswers(dao.getAnswers());
+        return question;
+    }
 }

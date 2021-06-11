@@ -1,6 +1,6 @@
 import org.junit.Before;
 import org.junit.Test;
-import questionnaire.dao.CSVDaoImpl;
+import questionnaire.dao.QuizDaoImpl;
 
 import java.io.IOException;
 
@@ -9,13 +9,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 
 public class DaoExeptionTest {
-    private CSVDaoImpl dao;
+    private QuizDaoImpl dao;
     private String pathQuestionCSV = "2questions.csv";
 
 
     @Before
     public void init() {
-        dao = new CSVDaoImpl(this.pathQuestionCSV);
+        dao = new QuizDaoImpl(this.pathQuestionCSV);
     }
 
     @Test(expected = NullPointerException.class)

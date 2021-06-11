@@ -1,11 +1,10 @@
 package questionnaire.services;
 
+import java.io.IOException;
+
 public interface QuizService {
 
-    void startQuiz();
+    void startQuiz() throws IOException;
 
-    void setUser();
-
-    String getResult();
 
 }
