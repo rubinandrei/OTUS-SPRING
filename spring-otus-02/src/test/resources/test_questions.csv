@@ -1,0 +1,3 @@
+ID;type;Name;questionID;isValidAnswer;
+1;0;What is JAVA?;;;
+1;1;Java is a high-level programming language and is platform-independent;1;true
