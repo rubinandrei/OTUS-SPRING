@@ -23,7 +23,9 @@ command:
 
 ## Artifact
 1. path: `.m2\repository\org\questionnaire\questionnaire\1.0-SNAPSHOT\questionnaire-1.0-SNAPSHOT.jar`
-2. run `java -jar questionnaire-1.0-SNAPSHOT.jar `
+2. run `java -jar questionnaire-0.0.3-SNAPSHOT.jar` 
+3. run with param `java -jar target/questionnare-0.0.3-SNAPSHOT.jar --local.language=en
+   `    `
 
 
 
