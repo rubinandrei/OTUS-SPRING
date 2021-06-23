@@ -11,6 +11,4 @@ public interface QuizService {
     void calcResult();
     List<String> showResult();
     String getUser();
-
-
 }

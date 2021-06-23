@@ -19,7 +19,7 @@ public class QuizServiceImpl implements QuizService {
     @Value("${max.passValue}")
     private int passValue;
 
-    LocalizationServiceImpl local;
+
 
     private static final String QUIZ_OUT = "\n %s \n";
     private static final String ANSWER_OUT = "\t %d.  -  %s \n\n";
@@ -31,11 +31,8 @@ public class QuizServiceImpl implements QuizService {
 
 
     @Autowired
-    public QuizServiceImpl(QuizDao dao, LocalizationServiceImpl local) {
+    public QuizServiceImpl(QuizDao dao) {
         this.dao = dao;
-        this.local = local;
-
-
     }
 
     @Autowired

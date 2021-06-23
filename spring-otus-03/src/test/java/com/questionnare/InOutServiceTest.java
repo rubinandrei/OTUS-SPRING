@@ -36,7 +36,7 @@ public class InOutServiceTest {
         dao.getUser();
         LocalizationServiceImpl loc = new LocalizationServiceImpl(new LocalizationConfiguration(mss,"en"));
         IOServiceImpl ioService = new IOServiceImpl(new IOStreamFactory(),loc);
-        QuizServiceImpl quizService = new QuizServiceImpl(dao,loc);
+        QuizServiceImpl quizService = new QuizServiceImpl(dao);
         quizService.setIOServiceImpl(ioService);
         quizService.setUser(" ");
         assertThat(dao.getUser().getFirstName(), is(USER_NAME.split(" ")[0]));

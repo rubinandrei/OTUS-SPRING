@@ -22,7 +22,6 @@ public class Answer {
         return questionsID;
     }
 
-
     public String getAnswer() {
         return answer;
     }

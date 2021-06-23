@@ -23,7 +23,6 @@ public class Question implements Cloneable{
         return question;
     }
 
-
     public List<Answer> getAnswers() {
         return answers;
     }

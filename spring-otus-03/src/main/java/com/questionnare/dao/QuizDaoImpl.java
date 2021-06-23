@@ -21,18 +21,16 @@ import java.util.List;
 
 @Repository
 public class QuizDaoImpl implements QuizDao {
+
     private final List<Question> questions = new ArrayList<>();
     private final List<Answer> answers = new ArrayList<>();
     private User user;
     private String question_file;
 
-
-
     @Autowired
     public QuizDaoImpl(LocalizationConfiguration local, @Value("${quiz.questionnaire.file}") String questionFile) {
           this.question_file = String.format(questionFile, local.getCurrentLanguage());
     }
-
 
 
     public void readFile() throws IOException, NullPointerException {
@@ -70,6 +68,5 @@ public class QuizDaoImpl implements QuizDao {
     public void setUser(String firstName, String secondName) {
          user = new User(firstName,secondName);
     }
-
 
 }
