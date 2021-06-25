@@ -13,9 +13,5 @@ public interface QuizDao {
 
     List<Answer> getAnswers();
 
-    User getUser();
-
-    void setUser(String firstName, String secondName);
-
-    void readFile() throws IOException, NullPointerException;
+    void readFile();
 }

@@ -19,7 +19,6 @@ public class LocalizationServiceImpl implements LocalizationService {
 
     @Override
     public String localize(String messageType, Object... args) {
-        return accessor.getMessage(
-                messageType,args);
+        return accessor.getMessage(messageType,args);
     }
 }

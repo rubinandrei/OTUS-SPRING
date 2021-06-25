@@ -1,10 +1,14 @@
 package com.questionnare.dto;
 
+import java.util.List;
+
 public final class User {
 
     private final String firstName;
     private final String lastName;
     private int countCorrectAnswers;
+    private List<Question> questions;
+
 
     public User(String firstName, String lastName) {
         this.firstName = firstName;
@@ -44,5 +48,13 @@ public final class User {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
     }
 }

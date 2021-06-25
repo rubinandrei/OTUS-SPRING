@@ -6,10 +6,10 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import com.questionnare.dto.Answer;
 import com.questionnare.dto.Question;
-import com.questionnare.dto.User;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,23 +19,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Repository
+@Component
 public class QuizDaoImpl implements QuizDao {
 
+    private static final Logger LOGGER = LogManager.getLogger(QuizDaoImpl.class);
     private final List<Question> questions = new ArrayList<>();
     private final List<Answer> answers = new ArrayList<>();
-    private User user;
     private String question_file;
 
     @Autowired
     public QuizDaoImpl(LocalizationConfiguration local, @Value("${quiz.questionnaire.file}") String questionFile) {
-          this.question_file = String.format(questionFile, local.getCurrentLanguage());
+        this.question_file = String.format(questionFile, local.getCurrentLanguage());
     }
 
-
-    public void readFile() throws IOException, NullPointerException {
-        try (InputStream stream = new ClassPathResource(question_file).getInputStream();
-             BufferedReader questionReader = new BufferedReader(new InputStreamReader(stream))){;
+    @Override
+    public void readFile() {
+        try {
+            InputStream stream = new ClassPathResource(question_file).getInputStream();
+            BufferedReader questionReader = new BufferedReader(new InputStreamReader(stream));
             questionReader.lines()
                     .skip(1)
                     .map(q -> q.split(";"))
@@ -46,6 +47,8 @@ public class QuizDaoImpl implements QuizDao {
                             questions.add(new Question(Integer.parseInt(q[0]), q[2]));
                         }
                     });
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -57,16 +60,6 @@ public class QuizDaoImpl implements QuizDao {
     @Override
     public List<Answer> getAnswers() {
         return this.answers;
-    }
-
-    @Override
-    public User getUser() {
-        return this.user;
-    }
-
-    @Override
-    public void setUser(String firstName, String secondName) {
-         user = new User(firstName,secondName);
     }
 
 }

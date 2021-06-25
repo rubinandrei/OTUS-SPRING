@@ -1,6 +1,6 @@
 package com.questionnare.services;
 
-import com.questionnare.localization.LocalizationServiceImpl;
+import com.questionnare.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,15 +16,8 @@ import java.util.stream.Collectors;
 @Service
 public class QuizServiceImpl implements QuizService {
 
-    @Value("${max.passValue}")
-    private int passValue;
-
-
-
     private static final String QUIZ_OUT = "\n %s \n";
     private static final String ANSWER_OUT = "\t %d.  -  %s \n\n";
-
-
     private List<Question> questions;
     private final QuizDao dao;
     private IOServiceImpl inOut;
@@ -41,7 +34,7 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public void initQuiz() throws IOException {
+    public void initQuiz() {
         this.dao.readFile();
         questions = dao.getQuestions().stream()
                 .map(this::apply)
@@ -60,41 +53,11 @@ public class QuizServiceImpl implements QuizService {
         });
     }
 
-    public void setUser(String message) {
-        String[] user = inOut.readUser(message);
-        dao.setUser(user[0], user[1]);
-    }
-
     @Override
-    public void calcResult() {
-        int count = (int) questions.stream()
-                .filter(question -> question.getAnswers().get(question.getAnswerID() - 1).isCorrect())
-                .count();
-        dao.getUser().setCountCorrectAnswers(count);
+    public List<Question> getQuestion() {
+      return questions;
     }
 
-    @Override
-    public String getUser() {
-        return dao.getUser().getFirstName() +"   " + dao.getUser().getLastName();
-    }
-
-
-    @Override
-    public List<String> showResult() {
-        List<String> resultFormat = dao.getUser().getCountCorrectAnswers() > 0?
-                Arrays.asList(
-                dao.getUser().getFirstName(),
-                dao.getUser().getLastName(),
-                String.valueOf(dao.getUser().getCountCorrectAnswers()),
-                String.valueOf(dao.getUser().getCountCorrectAnswers() * 100 / questions.size()))
-                :Arrays.asList(
-                dao.getUser().getFirstName(),
-                dao.getUser().getLastName(),
-                "0", "0");
-
-        return resultFormat;
-
-    }
 
     private Question apply(Question x) {
         Question question = x.clone();

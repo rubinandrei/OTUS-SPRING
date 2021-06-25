@@ -26,12 +26,12 @@ public class IOServiceImpl implements IOService {
     }
 
     @Override
-    public String[] readUser(String message) {
-        String[] str;
+    public String readConsoleString(String message) {
+        String str;
         while (true) {
             out.println(message);
-            str = scanner.nextLine().split(" ");
-            if (str.length > 1) {
+            str = scanner.nextLine();
+            if (str.length() > 1) {
                 break;
             }
         }
