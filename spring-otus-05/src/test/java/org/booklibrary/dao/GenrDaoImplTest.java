@@ -28,7 +28,7 @@ class GenrDaoImplTest {
     @DisplayName(value = "get all genr")
     void getAll() {
         List<Genr> allGenrs = genreDao.getAll();
-        assertEquals(allGenrs.size(), genreDao.count());
+        assertThat(allGenrs).hasSize(genreDao.count());
     }
 
     @Test
