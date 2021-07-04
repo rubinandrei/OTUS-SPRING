@@ -46,15 +46,24 @@ class BookDaoImplTest {
     @DisplayName(value = "get All books")
     void getAll() {
         List<Book> allBooks = bookDao.getAll();
+        val books = allBooks.get(0);
         assertEquals(allBooks.size(),BOOKS_COUNT);
+        assertThat(books).isNotNull()
+                .matches(book -> book.getGenrs().size() == 1)
+                .matches(book -> book.getName().equals(BOOKS_NAME))
+                .matches(book -> book.getAuthor().getName().equals(BOOKS_AUTHOR_NAME));
+        val books2 = allBooks.get(1);
+        assertThat(books2).isNotNull()
+                .matches(book -> book.getGenrs().size() == 2)
+                .matches(book -> book.getName().equals("book2"))
+                .matches(book -> book.getAuthor().getName().equals("Mikhail Bulgakov"));
     }
-
     @Test
     @Order(2)
     @DisplayName(value = "get book by ID")
     void getById() {
         val book = bookDao.getById(1);
-        org.assertj.core.api.Assertions.assertThat(book).isNotNull()
+        assertThat(book).isNotNull()
                 .matches(b-> b.getId() == 1,"wrong book ID")
                 .matches(b -> b.getAuthor().getName().equals(BOOKS_AUTHOR_NAME),"wrong author name")
                 .matches(b-> b.getName().equals(BOOKS_NAME),"wrong book name")
@@ -67,7 +76,7 @@ class BookDaoImplTest {
     @DisplayName(value = "get book by name")
     void getByName() {
         val book = bookDao.getByName("book");
-        org.assertj.core.api.Assertions.assertThat(book).isNotNull()
+        assertThat(book).isNotNull()
                 .matches(b-> b.getId() == 1,"wrong book ID")
                 .matches(b -> b.getAuthor().getName().equals(BOOKS_AUTHOR_NAME),"wrong author name")
                 .matches(b-> b.getName().equals(BOOKS_NAME),"wrong book name")
@@ -108,7 +117,7 @@ class BookDaoImplTest {
     @DisplayName(value = "add new book with author and genr")
     void insert() {
         val book = bookDao.insert(NEW_BOOK);
-        org.assertj.core.api.Assertions.assertThat(book).isNotNull()
+        assertThat(book).isNotNull()
                 .matches(b-> b.getId() == 4,"wrong book ID")
                 .matches(b -> b.getAuthor().getName().equals(NEW_BOOK.getAuthor().getName()),"wrong author name")
                 .matches(b-> b.getName().equals(NEW_BOOK.getName()),"wrong book name")

@@ -6,6 +6,7 @@ import org.booklibrary.dto.Genr;
 import org.booklibrary.exception.ObjectFoundException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.RowMapperResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -18,6 +19,7 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class BookDaoImpl implements BookDao {
@@ -116,12 +118,14 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public List<Book> getAll() {
-        Map<Long, Set<Genr>> allGenresByBookId = getAllGenresWithBookId();
-        List<Book> books = jdbcOperations.query("SELECT book.id, book.name, book.author_id, " +
-                "author.name as author_name FROM BOOKS as book" +
+        List<Book> books = (List<Book>) jdbcOperations.query("SELECT book.id, book.name, book.author_id, " +
+                "author.name as author_name,g.id as genr_id, g.name as genr_name   FROM BOOKS as book" +
                 " left outer join authors author " +
-                "  on book.author_id=author.id", new BookMapper());
-        books.forEach(b -> b.setGenrs(allGenresByBookId.get(b.getId())));
+                "  on book.author_id=author.id " +
+                " left outer join book_genr g_b " +
+                "  on book.id = g_b.book_id " +
+                " left outer join genr g " +
+                "  on g_b.genre_id = g.id  ", new BookAllMapper());
         return books;
     }
 
@@ -165,7 +169,7 @@ public class BookDaoImpl implements BookDao {
 
     private Map<Long, Set<Genr>> getAllGenresWithBookId() {
         Map<Long, Set<Genr>> allGenresByBookId = new HashMap<>();
-        jdbcOperations.query("SELECT * FROM book_genr " +
+        jdbcOperations.query("SELECT book_genr.book_id as book_id, book_genr.genre_id as genre_id, g.name as name  FROM book_genr " +
                 "join GENR g on book_genr.GENRE_ID = g.ID ORDER BY BOOK_ID, GENRE_ID", rs -> {
             allGenresByBookId.compute(rs.getLong("book_id"), (key, value) -> {
                 if (value == null) {
@@ -222,5 +226,31 @@ public class BookDaoImpl implements BookDao {
             String authorName = rs.getString("author_name");
             return new Book(id, name, new Author(authorId, authorName));
         }
+    }
+
+    private static class BookAllMapper implements ResultSetExtractor {
+        Map<Long, Book> bookById = new HashMap<>();
+        @Override
+        public List<Book> extractData(ResultSet rs) throws SQLException {
+            while (rs.next()) {
+                long id = rs.getInt("id");
+                String name = rs.getString("name");
+                long authorId = rs.getInt("author_id");
+                String authorName = rs.getString("author_name");
+                long genrId = rs.getInt("genr_id");
+                String genrName = rs.getString("genr_name");
+                Book book = bookById.get(id);
+                if (book == null) {
+                    Set<Genr> genr = new HashSet<>();
+                    book = new Book(id, name, new Author(authorId, authorName), genr);
+                    bookById.put(book.getId(), book);
+                }
+                if (!Objects.isNull(genrId)) {
+                    book.getGenrs().add(new Genr(genrId, genrName));
+                }
+            }
+            return bookById.values().stream().collect(Collectors.toList());
+        }
+
     }
 }
