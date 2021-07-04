@@ -60,6 +60,6 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public List<Author> getAll() {
-        return jdbcOperations.query("SELECT * FROM AUTHORS", AUTHOR_ROW_MAPPER);
+        return jdbcOperations.query("SELECT author.id, author.name FROM AUTHORS", AUTHOR_ROW_MAPPER);
     }
 }
